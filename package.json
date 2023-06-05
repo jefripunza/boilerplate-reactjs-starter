@@ -21,10 +21,16 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
+    "react-js-loader": "^0.1.0",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.11.2",
     "react-sparklines": "^1.7.0",
-    "sort-by": "^1.2.0"
+    "react-table": "^7.8.0",
+    "recharts": "^2.6.2",
+    "rsuite": "^5.35.0",
+    "sort-by": "^1.2.0",
+    "sweetalert2": "^11.7.10",
+    "sweetalert2-react-content": "^5.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

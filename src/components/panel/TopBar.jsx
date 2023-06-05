@@ -19,7 +19,7 @@ function TopBar({ showNav, setShowNav }) {
         showNav ? 'pl-56' : ''
       }`}
     >
-      <div className="pl-4 md:pl-16">
+      <div className="pl-4 md:pl-4">
         <Bars3CenterLeftIcon className="h-8 w-8 text-gray-700 cursor-pointer" onClick={() => setShowNav(!showNav)} />
       </div>
       <div className="flex items-center pr-4 md:pr-16">
@@ -27,13 +27,13 @@ function TopBar({ showNav, setShowNav }) {
         <Menu as="div" className="relative inline-block text-left">
           <div>
             <Menu.Button className="inline-flex w-full justify-center items-center">
-              <picture>
+              {/* <picture>
                 <img
                   src="/man-smiling.jpg"
                   className="rounded-full h-8 md:mr-4 border-2 border-white shadow-sm"
                   alt="profile"
                 />
-              </picture>
+              </picture> */}
               <span className="hidden md:block font-medium text-gray-700">Jefri Herdi Triyanto</span>
               <ChevronDownIcon className="ml-2 h-4 w-4 text-gray-700" />
             </Menu.Button>

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import SparkLine from '../../components/panel/SparkLine';
+import SparkLine from '../../components/panel/charts/SparkLine';
+import Line from '../../components/panel/charts/Line';
 
 import {
   AiOutlineCalendar,
@@ -93,6 +94,10 @@ const Dashboard = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="rounded rounded-2xl bg-white shadow-sm p-5 pt-6">
+        <Line />
       </div>
     </>
   );
