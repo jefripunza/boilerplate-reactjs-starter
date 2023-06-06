@@ -11,6 +11,11 @@ import { UserAvatarCell, DateCell, UserStatusCell, RoleCell } from '../../compon
 
 import { createModal } from '../../utils/sweetalert2';
 
+const ManageUser = ({ id }) => {
+  const isEdit = id;
+  return <div>sekarang saatnya kita {isEdit ? <>edit </> : <>add</>} user</div>;
+};
+
 const Users = () => {
   return (
     <>
@@ -58,6 +63,12 @@ const Users = () => {
               className={
                 'text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2'
               }
+              onClick={() =>
+                createModal({
+                  title: 'Add New User',
+                  children: <ManageUser />,
+                })
+              }
             >
               Add User
             </Button>,
@@ -69,9 +80,12 @@ const Users = () => {
                 <div className="tooltip">
                   <Button
                     data-tooltip-target={'tooltip-edit'}
-                    onClick={() => {
-                      console.log({ id });
-                    }}
+                    onClick={() =>
+                      createModal({
+                        title: 'Edit User',
+                        children: <ManageUser id={id} />,
+                      })
+                    }
                   >
                     <PencilSquareIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                   </Button>
@@ -111,7 +125,7 @@ const Users = () => {
                     >
                       <BeakerIcon className="h-5 w-5 text-green-600" aria-hidden="true" />
                     </Button>
-                    <span className="tooltiptext">Heal!</span>
+                    <span className="tooltiptext">Un-Block!</span>
                   </div>
                 )}
               </>
