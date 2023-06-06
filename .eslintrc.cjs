@@ -39,5 +39,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react-refresh/only-export-components': 'warn',
     'react/no-unescaped-entities': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
+    'react/prop-types': 'off',
   },
 };

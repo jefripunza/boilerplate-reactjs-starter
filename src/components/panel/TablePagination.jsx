@@ -1,10 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react/prop-types */
 
 import 'regenerator-runtime';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useTable } from 'react-table';
 import {
   ChevronDoubleLeftIcon,
@@ -424,13 +422,5 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
     </>
   );
 }
-
-TablePagination.propTypes = {
-  columns: PropTypes.array,
-  data: PropTypes.array,
-  action: PropTypes.func,
-  actionOnFirst: PropTypes.bool,
-  extraButton: PropTypes.array,
-};
 
 export default TablePagination;

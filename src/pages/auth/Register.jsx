@@ -1,42 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import * as AuthService from '../../services/AuthService';
-
-import TokenValidation from './TokenValidation';
-import { SpinnerDefault } from '../../components/shared/loader';
-
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const handleChange = (setState) => (event) => {
     setState(event.target.value);
   };
-  const [otp_secret, setOtpSecret] = React.useState('');
 
-  const [isProcess, setProcess] = React.useState(false);
-  const [message, setMessage] = React.useState(null);
   const [isTokenValidation, setTokenValidation] = React.useState(false);
 
   const submitted = async (e) => {
     e.preventDefault();
-    setProcess(true);
-    const [is_error, value] = await AuthService.login(username, password);
-    if (is_error) {
-      setMessage(value);
-      setProcess(false);
-      return;
-    }
-    setOtpSecret(value);
-    setTokenValidation(true);
   };
 
-  if (isTokenValidation) return <TokenValidation mode={'login'} otp_secret={otp_secret} />;
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
-        <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">Sign in</h1>
+        <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">Sign up</h1>
         <form className="mt-6" onSubmit={submitted}>
+          <div className="mb-2">
+            <label htmlFor="username" className="block text-sm font-semibold text-gray-800">
+              Phone Number (WhatsApp)
+            </label>
+            <input
+              type="text"
+              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            />
+          </div>
+          <div className="mb-2">
+            <label htmlFor="username" className="block text-sm font-semibold text-gray-800">
+              Full Name
+            </label>
+            <input
+              type="text"
+              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            />
+          </div>
           <div className="mb-2">
             <label htmlFor="username" className="block text-sm font-semibold text-gray-800">
               Username
@@ -44,9 +44,6 @@ const Login = () => {
             <input
               type="text"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              value={username}
-              onChange={handleChange(setUsername)}
-              disabled={isProcess}
             />
           </div>
           <div className="mb-2">
@@ -56,30 +53,12 @@ const Login = () => {
             <input
               type="password"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              value={password}
-              onChange={handleChange(setPassword)}
-              disabled={isProcess}
             />
           </div>
-          {message ? (
-            <div className="mb-2">
-              <span style={{ marginTop: 20, color: 'red' }}>{message}</span>{' '}
-            </div>
-          ) : null}
-          <a href="#" className="text-xs text-purple-600 hover:underline">
-            Forget Password?
-          </a>
           <div className="mt-6">
-            {isProcess ? (
-              <SpinnerDefault />
-            ) : (
-              <button
-                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
-                onClick={submitted}
-              >
-                Login
-              </button>
-            )}
+            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
+              Register
+            </button>
           </div>
         </form>
 
@@ -107,18 +86,16 @@ const Login = () => {
           </button>
         </div> */}
 
-        {isProcess ? null : (
-          <p className="mt-8 text-xs font-light text-center text-gray-700">
-            {' '}
-            Don't have an account?
-            <Link to="/register" className="font-medium text-purple-600 hover:underline">
-              Sign up
-            </Link>
-          </p>
-        )}
+        <p className="mt-8 text-xs font-light text-center text-gray-700">
+          {' '}
+          Have an account?{' '}
+          <Link to="/login" className="font-medium text-purple-600 hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

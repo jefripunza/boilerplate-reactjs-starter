@@ -9,25 +9,20 @@ import { SpinnerDefault } from '../components/shared/loader';
 
 const Swal = withReactContent(MySwal);
 
-export const createModal = (title, children, width = 600) => {
+export function closeModal() {
+  Swal.close();
+}
+
+export function modalLoading(title) {
   Swal.fire({
-    title: <p>{title}</p>,
-    html: children,
-    width,
+    html: <SpinnerDefault title={title} />,
+
     showConfirmButton: false,
     showCancelButton: false,
-    showCloseButton: true,
+    showCloseButton: false,
     allowOutsideClick: false,
-
-    didOpen: () => {
-      //
-    },
-
-    didClose: () => {
-      //
-    },
   });
-};
+}
 
 export const createSuccess = (message, timer = 3000, ifClose = false) => {
   Swal.fire({
@@ -83,11 +78,11 @@ export const createDelete = (onConfirm, message) => {
     html: message,
 
     showConfirmButton: true,
-    confirmButtonText: <span>Ya</span>,
+    confirmButtonText: <span>Yes</span>,
     confirmButtonColor: '#dc3545',
 
     showCancelButton: true,
-    cancelButtonText: <span>Batal</span>,
+    cancelButtonText: <span>Cancel</span>,
     cancelButtonColor: '#6c757d',
 
     reverseButtons: false,
@@ -103,17 +98,36 @@ export const createDelete = (onConfirm, message) => {
   });
 };
 
-export function modalLoading(title) {
+/**
+ * @param {{ title: string|undefined, children: React.ReactElement, width: number, onOpen: Function|undefined, onClose: Function|undefined }} option
+ */
+export const createModal = (option) => {
+  if (!option?.children) {
+    throw new Error('please use children!');
+  }
+  if (!option?.width) {
+    option.width = 600;
+  }
+
   Swal.fire({
-    html: <SpinnerDefault title={title} />,
+    title: option.title ? <p>{option.title}</p> : undefined,
+    html: option.children,
+    width: option.width,
 
     showConfirmButton: false,
     showCancelButton: false,
-    showCloseButton: false,
+    showCloseButton: true,
     allowOutsideClick: false,
-  });
-}
 
-export function closeModal() {
-  Swal.close();
-}
+    didOpen: () => {
+      if (option?.onOpen) {
+        option.onOpen();
+      }
+    },
+    didClose: () => {
+      if (option?.onClose) {
+        option.onClose();
+      }
+    },
+  });
+};

@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import React from 'react';
 
 import { NoSymbolIcon } from '@heroicons/react/24/outline';
@@ -45,7 +43,7 @@ export function RoleCell({ value, row }) {
   let role = value;
   const { id_seller } = row.original;
   if (id_seller) {
-    role = 'seller';
+    role = 'basic / seller';
   } else if (value == 'admin') {
     role = value;
   }
@@ -53,7 +51,7 @@ export function RoleCell({ value, row }) {
     <span
       className={classNames(
         'px-3 py-1 uppercase leading-wide font-bold text-xs rounded-full shadow-sm',
-        role.startsWith('seller') ? 'bg-green-100 text-green-800' : null,
+        role.startsWith('basic / seller') ? 'bg-green-100 text-green-800' : null,
         role.startsWith('basic') ? 'bg-blue-100 text-teal-800' : null,
       )}
     >
@@ -74,7 +72,6 @@ export function DateCell({ value }) {
     fixZeros(date_value.getHours()),
     fixZeros(date_value.getMinutes()),
   ];
-
   return (
     <span>
       {year}-{month}-{date} {hour}:{minute}

@@ -1,5 +1,7 @@
-import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { Menu, Transition } from '@headlessui/react';
 import {
   Bars3CenterLeftIcon,
@@ -7,12 +9,18 @@ import {
   ChevronDownIcon,
   CreditCardIcon,
   Cog8ToothIcon,
+  ArrowLeftOnRectangleIcon,
 } from '@heroicons/react/24/solid';
+
 import NotificationDropDown from './NotificationDropDown';
 
-import PropTypes from 'prop-types';
+import { logout } from '../../app/auth';
 
 function TopBar({ showNav, setShowNav }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth?.user);
+
   return (
     <div
       className={`fixed w-full h-16 flex justify-between items-center transition-all duration-[400ms] ${
@@ -29,12 +37,12 @@ function TopBar({ showNav, setShowNav }) {
             <Menu.Button className="inline-flex w-full justify-center items-center">
               {/* <picture>
                 <img
-                  src="/man-smiling.jpg"
+                  src={`${user.img_avatar}`}
                   className="rounded-full h-8 md:mr-4 border-2 border-white shadow-sm"
                   alt="profile"
                 />
               </picture> */}
-              <span className="hidden md:block font-medium text-gray-700">Jefri Herdi Triyanto</span>
+              <span className="hidden md:block font-medium text-gray-700">{user.name}</span>
               <ChevronDownIcon className="ml-2 h-4 w-4 text-gray-700" />
             </Menu.Button>
           </div>
@@ -76,6 +84,26 @@ function TopBar({ showNav, setShowNav }) {
                     Settings
                   </Link>
                 </Menu.Item>
+                <Menu.Item>
+                  <a
+                    href="#logout"
+                    className="flex hover:bg-orange-500 hover:text-white text-red-500 rounded p-2 text-sm group transition-colors items-center"
+                    onClick={async () => {
+                      dispatch(logout())
+                        .unwrap()
+                        .then(([is_error, _]) => {
+                          if (!is_error) {
+                            setTimeout(() => {
+                              navigate('/login', { replace: true });
+                            }, 500);
+                          }
+                        });
+                    }}
+                  >
+                    <ArrowLeftOnRectangleIcon className="h-4 w-4 mr-2" />
+                    Logout
+                  </a>
+                </Menu.Item>
               </div>
             </Menu.Items>
           </Transition>
@@ -84,10 +112,5 @@ function TopBar({ showNav, setShowNav }) {
     </div>
   );
 }
-
-TopBar.propTypes = {
-  showNav: PropTypes.bool,
-  setShowNav: PropTypes.func,
-};
 
 export default TopBar;

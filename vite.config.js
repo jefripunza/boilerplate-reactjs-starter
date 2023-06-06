@@ -8,8 +8,15 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      workbox: {
+        globPatterns: ['**/*'],
+        maximumFileSizeToCacheInBytes: 50000000,
+      },
+      includeAssets: ['**/*'],
       devOptions: {
         enabled: true,
+        type: 'module',
       },
     }),
   ],

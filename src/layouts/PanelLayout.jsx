@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Transition } from '@headlessui/react';
 
@@ -7,22 +9,24 @@ import { checkToken } from '../app/auth';
 
 import TopBar from '../components/panel/TopBar';
 import SideBar from '../components/panel/SideBar';
+import OnLoading from '../components/shared/on_loading';
 
 const AuthLayout = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [isLoaded, setLoaded] = React.useState(false);
-  const [isLogin, setLogin] = React.useState(false);
 
   React.useEffect(() => {
     dispatch(checkToken())
       .unwrap()
-      .then((data) => {
-        if (data) {
-          console.log({ data });
-          setLogin(true);
-        } else {
-          console.log('not login...');
+      .then(([is_error, _]) => {
+        if (is_error) {
+          // console.log('not login...');
+          navigate('/login', { replace: true });
+          return;
         }
+        // console.log('login...');
       })
       .catch((e) => {
         console.log(e);
@@ -30,14 +34,10 @@ const AuthLayout = () => {
       .finally(() => {
         setLoaded(true);
       });
-  }, [dispatch]);
-
-  // if (!isLoaded) return <>Loading...</>;
-  // if (!isLogin) return <>You're not login...</>;
+  }, []);
 
   const [showNav, setShowNav] = React.useState(true);
   const [isMobile, setIsMobile] = React.useState(false);
-
   function handleResize() {
     if (innerWidth <= 640) {
       setShowNav(false);
@@ -52,12 +52,12 @@ const AuthLayout = () => {
     if (typeof window != 'undefined') {
       addEventListener('resize', handleResize);
     }
-
     return () => {
       removeEventListener('resize', handleResize);
     };
   }, []);
 
+  if (!isLoaded) return <OnLoading />; // <Navigate to={"/login"} replace />
   return (
     <>
       <TopBar showNav={showNav} setShowNav={setShowNav} />

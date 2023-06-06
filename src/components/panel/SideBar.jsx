@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 
 import routers from '../../routers';
@@ -47,8 +46,5 @@ const SideBar = forwardRef(({ showNav }, ref) => {
 });
 
 SideBar.displayName = 'SideBar';
-SideBar.propTypes = {
-  showNav: PropTypes.bool,
-};
 
 export default SideBar;

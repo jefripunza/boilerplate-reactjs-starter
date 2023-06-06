@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-/* eslint-disable react/prop-types */
 
 import React from 'react';
 import Container from '../../components/panel/Container';
@@ -9,6 +8,8 @@ import { PencilSquareIcon, NoSymbolIcon, BeakerIcon, ArrowLeftOnRectangleIcon } 
 
 import { Button } from '../../components/shared/buttons';
 import { UserAvatarCell, DateCell, UserStatusCell, RoleCell } from '../../components/shared/cells';
+
+import { createModal } from '../../utils/sweetalert2';
 
 const Users = () => {
   return (

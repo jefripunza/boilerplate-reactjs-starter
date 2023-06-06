@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Sparklines, SparklinesCurve, SparklinesSpots, SparklinesReferenceLine } from 'react-sparklines';
 
 class SparkLine extends React.PureComponent {
@@ -16,12 +15,5 @@ class SparkLine extends React.PureComponent {
     );
   }
 }
-
-SparkLine.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  color: PropTypes.string,
-  data: PropTypes.array,
-};
 
 export default SparkLine;

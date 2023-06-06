@@ -1,24 +1,26 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { checkToken } from '../app/auth';
 
+import OnLoading from '../components/shared/on_loading';
+
 const AuthLayout = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoaded, setLoaded] = React.useState(false);
-  const [isLogin, setLogin] = React.useState(false);
 
   React.useEffect(() => {
     dispatch(checkToken())
       .unwrap()
-      .then((data) => {
-        if (data) {
-          console.log({ data });
-          setLogin(true);
-        } else {
-          console.log('not login...');
+      .then(([is_error, _]) => {
+        if (is_error) {
+          // console.log('not login...');
+          return;
         }
+        // console.log('login...');
+        navigate('/panel', { replace: true });
       })
       .catch((e) => {
         console.log(e);
@@ -26,11 +28,9 @@ const AuthLayout = () => {
       .finally(() => {
         setLoaded(true);
       });
-  }, [dispatch]);
+  }, []);
 
-  if (!isLoaded) return <>Loading...</>;
-  if (isLogin) return <>You're login...</>;
-
+  if (!isLoaded) return <OnLoading />; // <Navigate to={"/login"} replace />
   return (
     <div>
       <Outlet />
