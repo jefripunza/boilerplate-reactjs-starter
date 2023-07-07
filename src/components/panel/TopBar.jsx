@@ -9,7 +9,7 @@ import {
   ChevronDownIcon,
   CreditCardIcon,
   Cog8ToothIcon,
-  ArrowLeftOnRectangleIcon,
+  PowerIcon,
 } from '@heroicons/react/24/solid';
 
 import NotificationDropDown from './NotificationDropDown';
@@ -100,7 +100,7 @@ function TopBar({ showNav, setShowNav }) {
                         });
                     }}
                   >
-                    <ArrowLeftOnRectangleIcon className="h-4 w-4 mr-2" />
+                    <PowerIcon className="h-4 w-4 mr-2" />
                     Logout
                   </a>
                 </Menu.Item>

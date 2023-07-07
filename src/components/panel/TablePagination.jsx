@@ -54,7 +54,11 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
       setFilterSearch((prevState) => {
         const lastValue = { ...prevState };
         if (value) {
-          lastValue[column] = value;
+          if (value == '*') {
+            delete lastValue[column];
+          } else {
+            lastValue[column] = value;
+          }
         } else {
           delete lastValue[column];
         }
@@ -116,7 +120,6 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
             return res;
           })
           .then((res) => {
-            console.log({ res });
             setData(res.data);
             setInit(res.init);
             setTotalData(res.meta.total_data);
@@ -160,11 +163,16 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
                     <tr key={i_header} {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column, i_column) => {
                         const column_name = column.id;
-                        const canSortBy = init?.sort && init.sort.find((key) => key == column_name);
-                        const canFilterSearch = init?.filter && init.filter.search.find((key) => key == column_name);
+                        const canSortBy = init?.sort && init.sort.find((key) => String(key).endsWith(column_name));
+                        const canFilterSearch =
+                          init?.filter && init.filter.search.find((key) => String(key).endsWith(column_name));
+                        const canFilterBoolean =
+                          init?.filter && init.filter.boolean.find((key) => String(key).endsWith(column_name));
                         const canFilterDateRange =
-                          init?.filter && init.filter.date_range.find((key) => key == column_name);
-                        const canFilterEnum = init?.filter && init.filter.enum.find((key) => key.column == column_name);
+                          init?.filter && init.filter.date_range.find((key) => String(key).endsWith(column_name));
+                        const canFilterEnum =
+                          init?.filter && init.filter.enum.find((key) => String(key.column).endsWith(column_name));
+
                         return (
                           // Add the sorting props to control sorting. For this example
                           // we can add them into the header props
@@ -179,10 +187,10 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
                               onClick={() => {
                                 if (!isLoading) {
                                   if (canSortBy) {
-                                    if (sortBy == column_name) {
+                                    if (sortBy == canSortBy) {
                                       setSortedDesc((prevState) => !prevState);
                                     } else {
-                                      setSortBy(column_name);
+                                      setSortBy(canSortBy);
                                       setSortedDesc(false);
                                     }
                                   }
@@ -210,11 +218,12 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
                               <div className="mt-3">
                                 <select
                                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                  onChange={(e) => onFilterDebounce(column_name, e)}
+                                  onChange={(e) => onFilterDebounce(canFilterEnum.column, e)}
                                 >
                                   <option selected hidden disabled>
                                     Choose a {column.Header}
                                   </option>
+                                  <option value={'*'}>All</option>
                                   {canFilterEnum.option.map((opt, i_opt) => (
                                     <option key={i_opt} value={opt}>
                                       {opt}
@@ -229,8 +238,22 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
                                   name="test"
                                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                   placeholder={`Typing a ${column.Header}...`}
-                                  onChange={(e) => onFilterDebounce(column_name, e)}
+                                  onChange={(e) => onFilterDebounce(canFilterSearch, e)}
                                 />
+                              </div>
+                            ) : canFilterBoolean ? (
+                              <div className="mt-3">
+                                <select
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                  onChange={(e) => onFilterDebounce(canFilterBoolean, e)}
+                                >
+                                  <option selected hidden disabled>
+                                    Choose a {column.Header}
+                                  </option>
+                                  <option value={'*'}>All</option>
+                                  <option value={'true'}>Yes</option>
+                                  <option value={'false'}>No</option>
+                                </select>
                               </div>
                             ) : canFilterDateRange ? (
                               <div className="mt-3">
@@ -256,7 +279,7 @@ function TablePagination({ url, columns, action, actionOnFirst, extraButton }) {
                                       fixZeros(d_end.getDate()),
                                     ];
                                     onFilterDebounce(
-                                      column_name,
+                                      canFilterDateRange,
                                       `${start_year}-${start_month}-${start_date}>${end_year}-${end_month}-${end_date}`,
                                     );
                                   }}

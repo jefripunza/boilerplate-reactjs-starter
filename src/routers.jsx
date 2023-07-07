@@ -53,27 +53,38 @@ const routers = createBrowserRouter([
     path: '/panel',
     element: <PanelLayout />,
     children: [
-      { index: true, element: <Navigate to="/panel/dashboard" replace /> },
+      { index: true, element: <Navigate to="dashboard" replace /> },
       {
-        path: '/panel/dashboard',
+        path: 'dashboard',
         title: 'Dashboard',
         icon: HomeIcon,
         element: <Dashboard />,
       },
       {
-        path: '/panel/users',
+        path: 'users',
         title: 'Users',
         icon: UserIcon,
         element: <Users />,
       },
       {
-        path: '/panel/products',
+        path: 'products',
         title: 'Products',
         icon: InboxStackIcon,
-        element: <Products />,
+        children: [
+          {
+            path: 'list',
+            title: 'List',
+            element: <Products />,
+          },
+          {
+            path: 'category',
+            title: 'Category',
+            element: <Products />,
+          },
+        ],
       },
       {
-        path: '/panel/settings',
+        path: 'settings',
         title: 'Settings',
         icon: Cog8ToothIcon,
         element: <Settings />,
