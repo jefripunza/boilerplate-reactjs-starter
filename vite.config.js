@@ -12,6 +12,8 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*'],
         maximumFileSizeToCacheInBytes: 50000000,
+        cleanupOutdatedCaches: false,
+        sourcemap: true,
       },
       includeAssets: ['**/*'],
       devOptions: {
